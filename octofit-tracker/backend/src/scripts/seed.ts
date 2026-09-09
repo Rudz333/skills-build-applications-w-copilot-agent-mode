@@ -41,7 +41,8 @@ async function seedDatabase() {
     await Leaderboard.insertMany([
       { username: 'jordan', teamName: 'Trail Blazers', points: 820, rank: 1, period: 'September 2026' },
       { username: 'alex', teamName: 'Trail Blazers', points: 640, rank: 2, period: 'September 2026' },
-      { username: 'sam', teamName: 'Core Crew', points: 410, rank: 3, period: 'September 2026' },
+      { username: 'rudz', teamName: 'Core Crew', points: 500, rank: 3, period: 'September 2026' },
+      { username: 'sam', teamName: 'Core Crew', points: 410, rank: 4, period: 'September 2026' },
     ]);
     await Workout.insertMany([
       { title: 'Morning Momentum', description: 'A balanced full-body session to start the day.', difficulty: 'beginner', durationMinutes: 25, exercises: ['Bodyweight squats', 'Push-ups', 'Plank'], target: 'Full body' },
