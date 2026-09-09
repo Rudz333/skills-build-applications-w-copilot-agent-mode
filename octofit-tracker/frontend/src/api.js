@@ -1,4 +1,9 @@
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const configuredCodespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const browserHostname = typeof window === 'undefined' ? '' : window.location.hostname
+const browserCodespaceName = browserHostname.endsWith('-5173.app.github.dev')
+  ? browserHostname.slice(0, -'-5173.app.github.dev'.length)
+  : ''
+export const codespaceName = configuredCodespaceName || browserCodespaceName
 
 export const isCodespacesConfigured = Boolean(codespaceName)
 export const apiBaseUrl = codespaceName
@@ -9,8 +14,8 @@ export function resourceUrl(resource) {
   return `${apiBaseUrl}/${resource}/`
 }
 
-export async function fetchResource(resource) {
-  const response = await fetch(resourceUrl(resource))
+export async function fetchResource(resource, endpoint = resourceUrl(resource)) {
+  const response = await fetch(endpoint)
   if (!response.ok) {
     throw new Error(`Could not load ${resource} (${response.status})`)
   }

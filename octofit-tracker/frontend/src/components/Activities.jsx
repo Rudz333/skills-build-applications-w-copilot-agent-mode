@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
-import { fetchResource } from '../api.js'
+import { codespaceName, fetchResource } from '../api.js'
 import { EmptyState, ResourceState } from './ResourceState.jsx'
+
+const activitiesEndpoint = typeof window !== 'undefined'
+  ? '/api/activities/'
+  : codespaceName
+    ? `https://${codespaceName}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/'
 
 function Activities() {
   const [activities, setActivities] = useState([])
   const [state, setState] = useState({ loading: true, error: '' })
 
   useEffect(() => {
-    fetchResource('activities').then((data) => {
+    fetchResource('activities', activitiesEndpoint).then((data) => {
       setActivities(data)
       setState({ loading: false, error: '' })
     }).catch((error) => setState({ loading: false, error: error.message }))

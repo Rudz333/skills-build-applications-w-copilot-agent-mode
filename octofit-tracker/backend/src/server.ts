@@ -14,6 +14,18 @@ const baseUrl = codespaceName
   : `http://localhost:${port}`
 
 app.use(express.json())
+app.use((request, response, next) => {
+  const origin = request.headers.origin
+  if (origin) response.header('Access-Control-Allow-Origin', origin)
+  response.header('Vary', 'Origin')
+  response.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS')
+  response.header('Access-Control-Allow-Headers', 'Content-Type')
+  if (request.method === 'OPTIONS') {
+    response.sendStatus(204)
+    return
+  }
+  next()
+})
 
 app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok', service: 'octofit-tracker-api', baseUrl })
@@ -32,6 +44,12 @@ app.use('/api/teams', teamRouter)
 app.use('/api/activities', activityRouter)
 app.use('/api/leaderboard', leaderboardRouter)
 app.use('/api/workouts', workoutRouter)
+
+app.use('/users', userRouter)
+app.use('/teams', teamRouter)
+app.use('/activities', activityRouter)
+app.use('/leaderboard', leaderboardRouter)
+app.use('/workouts', workoutRouter)
 
 async function startServer() {
   try {
